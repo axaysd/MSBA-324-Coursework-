@@ -1,0 +1,50 @@
+---
+title: "Classification And Regression Trees (CART)"
+output: html_notebook
+---
+
+```{r}
+iris.df <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data", sep=",", header=F)
+
+colnames(iris.df) <- c("sepall", "sepalw", "petall", "petalw", "class")
+
+head(iris.df, 3)
+
+xtabs(~ class, data=iris.df)
+
+install.packages("tree")
+library("tree")
+
+# convert the class variable into a factor
+iris.df$class <- as.factor(iris.df$class)
+
+# execute tree classification function
+iris.tree1 = tree(class~., data=iris.df)
+
+summary(iris.tree1)
+
+# plot out the tree
+plot(iris.tree1)
+
+# add explanatory text to the tree
+text(iris.tree1, all=T)
+```
+
+```{r}
+# Pruning the Trees
+
+cv.tree(iris.tree1)
+```
+
+```{r}
+iris.tree2 = prune.misclass(iris.tree1, best=3)
+
+# plot out the tree
+plot(iris.tree2)
+
+# add explanatory text to the tree
+text(iris.tree2, all=T)
+
+summary(iris.tree2)
+```
+
