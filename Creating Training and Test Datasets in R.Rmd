@@ -1,0 +1,27 @@
+---
+title: "Creating training and test datasets in R"
+output: html_notebook
+---
+
+```{r}
+# Read the table
+wine.df <- read.table("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data", sep=",", header=FALSE)
+
+# dim(wine.df)[1] calculates the number of rows in hethe data frame
+# 0.6 i.e. 60% is multiplied to the resultant number of rows 
+# sample returns a 60% number of random rows from the total number of rows
+
+train.rows <- sample(rownames(wine.df), dim(wine.df)[1]*0.6)
+
+train.data <- wine.df[train.rows, ]
+
+# creating validation dataset
+
+valid.rows <- setdiff(rownames(wine.df), train.rows)
+
+valid.data <- wine.df[valid.rows, ]
+
+train.rows
+
+valid.rows
+```
