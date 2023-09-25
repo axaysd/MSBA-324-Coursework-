@@ -1,0 +1,50 @@
+---
+title: "R Cluster Analysis - UCIMLR Wine dataset"
+output: html_notebook
+---
+
+```{r}
+# Reading the dataset
+wineCV.df <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data", header=FALSE)
+wineCV.df
+```
+
+```{r}
+# Setting columns names for each column
+
+colnames(wineCV.df) <- c("CV", "Alc", "Mal", "Ash", "Alk", "Mag", "Phe", "Fla", "Non", "Proa", "Col", "Hue", "OD2", "Prol")
+
+wineCV.df
+```
+```{r}
+# Removing the Cultivar column as it's the target clustering we will perform here
+
+wineNoCV.df <- wineCV.df
+wineNoCV.df$CV <- NULL
+head(wineCV.df)
+head(wineNoCV.df)
+```
+```{r}
+# Normalizing the dataset
+
+# Example difference in scales between 2 variables
+max(wineNoCV.df$Non); max(wineNoCV.df$Prol);
+
+wineNoCV.df <- sapply(wineNoCV.df, scale)
+head(wineNoCV.df)
+```
+```{r}
+# Calculate Euclidean distance matrix
+wineNoCVDist.df <- dist(wineNoCV.df, method="euclidean")
+
+# Calculate the clusters using hclust() and ward.D2 algorithm
+
+wineNoCVClust.df <- hclust(wineNoCVDist.df, method="ward.D2")
+
+# Identify the clusters
+plot(wineNoCVClust.df)
+```
+
+
+
+

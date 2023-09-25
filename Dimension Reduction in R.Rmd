@@ -1,0 +1,35 @@
+---
+title: "Dimension Reduction in R"
+output: html_notebook
+---
+
+```{r}
+# Read the table
+wine <- read.table("http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data", sep=",", header=FALSE)
+wine
+
+colnames(wine) <- c("Cvs", "Alcohol", "Malic acid", "Ash", "Alkalinity of ash", "Magnesium", "Total phenols", "Flavanoids", "Nonflavanoid phenols", "Proanthocyanins", "Color intensity", "Hue", "OD280/OD315 of diluted wines", "Proline")
+
+# Plot heatmap to show correlation among variables
+heatmap(cor(wine), Rowv=NA, Colv=NA)
+```
+
+```{r}
+# Creating a factor classes that corresponds to the 3 cultivars
+classes <- factor(wine$Cvs)
+classes
+```
+```{r}
+# Apply principal component analysis on the scaled wine dataset excluding the Cvs column
+winePCA <- prcomp(scale(wine[,-1]))
+
+summary(winePCA)
+```
+
+```{r}
+# Plotting the principal components
+
+plot(winePCA$x[, 1:2], col=classes)
+plot(winePCA$x, col=classes)
+```
+
